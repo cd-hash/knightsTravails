@@ -1,10 +1,11 @@
+require 'byebug'
 require_relative './polyTree.rb'
 
 class KnightPathFinder
     def self.validMoves(posArray)
-        moveList = {'upLeft' => [-1,2], 'upRight' => [1,2],
-        'leftUp' => [-2,1], 'rightUp' => [2,1], 'downLeft' => [-1,-2], 'downRight' => [1,-2],
-        'leftDown' => [-2,-1], 'rightDown'=> [2,-1]}
+        moveList = {'upLeft' => [-1,-2], 'upRight' => [1,-2],
+        'leftUp' => [-2,-1], 'rightUp' => [2,-1], 'downLeft' => [-1,2], 'downRight' => [1,2],
+        'leftDown' => [-2,1], 'rightDown'=> [2,1]}
         validMoves = []
         for move in moveList.keys
             xCoord, yCoord = posArray
@@ -26,9 +27,10 @@ class KnightPathFinder
     end
 
     def newMovePositions(posArray)
+        #debugger
         possibleMoves = self.class.validMoves(posArray)
-        possibleMoves.select! do |move|
-            @consideredPositions.any? {|ele| ele == move}
+        possibleMoves = possibleMoves.select do |move|
+            @consideredPositions.any? {|ele| ele != move}
         end
         return possibleMoves
     end
