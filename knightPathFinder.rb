@@ -20,6 +20,8 @@ class KnightPathFinder
         return validMoves
     end
 
+    attr_reader :consideredPositions
+
     def initialize(startingPosition)
         @startingPosition = startingPosition
         @rootNode = PolyTreeNode.new(startingPosition)
@@ -27,11 +29,12 @@ class KnightPathFinder
     end
 
     def newMovePositions(posArray)
-        #debugger
+        debugger
         possibleMoves = self.class.validMoves(posArray)
         possibleMoves = possibleMoves.select do |move|
             @consideredPositions.any? {|ele| ele != move}
         end
+        possibleMoves.each {|move| @consideredPositions << move}
         return possibleMoves
     end
 
@@ -40,14 +43,17 @@ class KnightPathFinder
 
     def buildMoveTree()
         #use  FIFO node creation method
-        queue = []
-        possibleMoves = newMovePositions(@rootNode.value)
-        possibleMoves.each {|node| queue.unshift(node)}
+        queue = [@rootNode]
+        #possibleMoves = newMovePositions(@rootNode.value)
+        debugger
         until queue.empty?
             moveNode = queue.pop()
-            node = PolyTreeNode.new(moveNode)
-            node.parent = # how do i call the previous parent?
-            possibleMoves = newMovePositions(node.value)
+            possibleMoves = newMovePositions(moveNode.value)
+            possibleMoves.each_index do |index|
+                possibleMoves[index] = PolyTreeNode.new(possibleMoves[index])
+                moveNode.add_child(possibleMoves[index])
+            end
+            possibleMoves.each {|node| queue.unshift(node)}
         end
     end
 end
