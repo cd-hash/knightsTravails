@@ -39,5 +39,15 @@ class KnightPathFinder
     end
 
     def buildMoveTree()
+        #use  FIFO node creation method
+        queue = []
+        possibleMoves = newMovePositions(@rootNode.value)
+        possibleMoves.each {|node| queue.unshift(node)}
+        until queue.empty?
+            moveNode = queue.pop()
+            node = PolyTreeNode.new(moveNode)
+            node.parent = # how do i call the previous parent?
+            possibleMoves = newMovePositions(node.value)
+        end
     end
 end
