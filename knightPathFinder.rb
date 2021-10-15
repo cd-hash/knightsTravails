@@ -29,10 +29,10 @@ class KnightPathFinder
     end
 
     def newMovePositions(posArray)
-        debugger
+        # debugger
         possibleMoves = self.class.validMoves(posArray)
-        possibleMoves = possibleMoves.select do |move|
-            @consideredPositions.any? {|ele| ele != move}
+        possibleMoves.select! do |node|
+            !@consideredPositions.include?(node)
         end
         possibleMoves.each {|move| @consideredPositions << move}
         return possibleMoves
@@ -45,7 +45,7 @@ class KnightPathFinder
         #use  FIFO node creation method
         queue = [@rootNode]
         #possibleMoves = newMovePositions(@rootNode.value)
-        debugger
+        # debugger
         until queue.empty?
             moveNode = queue.pop()
             possibleMoves = newMovePositions(moveNode.value)
@@ -55,5 +55,6 @@ class KnightPathFinder
             end
             possibleMoves.each {|node| queue.unshift(node)}
         end
+        return true
     end
 end
