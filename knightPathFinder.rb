@@ -38,7 +38,34 @@ class KnightPathFinder
         return possibleMoves
     end
 
-    def findPath(finalPosition)
+    def findPathBFS(finalPosition)
+        #first implementation using BFS
+        queue = [@rootNode]
+        until queue.empty?
+            currentNode = queue.pop()
+            if currentNode.value == finalPosition
+                return tracePathBack(currentNode)
+            else
+                currentNode.children.each do |child|
+                    queue.unshift(child)
+                end
+            end
+        end
+    end
+
+    def tracePathBack(finalNode)
+        #take the final node as a param and follow parent line back to root to show path
+        currentNode = finalNode.parent
+        path = [finalNode.value]
+        while currentNode && currentNode.parent
+            # debugger
+            path.unshift(currentNode.value)
+            currentNode = currentNode.parent
+            if !currentNode.parent
+                path.unshift(currentNode)
+            end
+        end
+        return path
     end
 
     def buildMoveTree()
